@@ -244,16 +244,20 @@ body {
 
 /* Click to open - expand letter and fade out envelope */
 .envelope-wrapper.opening .letter {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 1;
+    transform: translate(-50%, -50%) scale(8);
+    opacity: 0;
     z-index: 10000;
-    transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .envelope-wrapper.opening .envelope,
 .envelope-wrapper.opening .flap {
     opacity: 0;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.8s ease;
+}
+
+.envelope-wrapper.opening {
+    animation: none;
 }
 
 /* Hint Text */
@@ -297,11 +301,11 @@ body {
 .transition-overlay {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #dc2626, #16a34a);
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, #0f172a 100%);
     z-index: 10000;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.8s ease;
+    transition: opacity 1.2s ease-in;
 }
 
 .transition-overlay.active {
@@ -359,6 +363,11 @@ body {
 <div class="christmas-bg"></div>
 <div class="lights-top" id="lights"></div>
 <div class="transition-overlay" id="overlay"></div>
+
+<!-- Background Music -->
+<audio id="christmasMusic" preload="auto">
+    <source src="all-i-want-for-christmas.mp3" type="audio/mpeg">
+</audio>
 
 <div class="container">
     <div class="title">🎄 For Kune 🎁</div>
@@ -426,9 +435,16 @@ function createSparkles(x, y) {
 function openLetter() {
     const wrapper = document.getElementById('envelopeWrapper');
     const overlay = document.getElementById('overlay');
+    const music = document.getElementById('christmasMusic');
     
     // Prevent multiple clicks
     if (wrapper.classList.contains('opening')) return;
+    
+    // Play music
+    music.play().catch(err => {
+        console.log('Audio play failed:', err);
+        // Music might be blocked by browser, but animation continues
+    });
     
     // Add opening animation
     wrapper.classList.add('opening');
@@ -437,16 +453,16 @@ function openLetter() {
     const rect = wrapper.getBoundingClientRect();
     createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
     
-    // After letter expands, show transition overlay
+    // Start white flash transition as letter expands
     setTimeout(() => {
         overlay.classList.add('active');
-    }, 1000);
+    }, 800);
     
-    // Redirect to main greeting
+    // Redirect to main greeting with smooth transition
     setTimeout(() => {
         // Replace with your actual greeting page filename
         window.location.href = "christmasgreetings.html";
-    }, 1800);
+    }, 2000);
 }
 
 // Initialize
