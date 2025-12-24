@@ -365,8 +365,8 @@ body {
 <div class="transition-overlay" id="overlay"></div>
 
 <!-- Background Music -->
-<audio id="christmasMusic" preload="auto" autoplay loop muted>
-    <source src="wham.mp3" type="audio/mpeg">
+<audio id="christmasMusic" preload="auto">
+    <source src="instrumental.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
@@ -464,18 +464,6 @@ function openLetter() {
         window.location.href = "christmasgreetings.html";
     }, 2000);
 }
-
-window.addEventListener('load', () => {
-    const music = document.getElementById('christmasMusic');
-
-    // Start muted autoplay
-    music.play().catch(() => {});
-
-    // Unmute shortly after (works on most browsers)
-    setTimeout(() => {
-        music.muted = false;
-    }, 500);
-});
 
 // Initialize
 createLights();
